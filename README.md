@@ -13,7 +13,7 @@ Website cerdas untuk mengecek apakah sebuah klaim atau pesan berantai sudah pern
 
 ## Cara Kerja
 
-Scraping data cek fakta, pembersihan data, penyimpanan ke SQLite, lalu pencocokan klaim. Website dan chatbot memakai database dan fungsi pencocokan yang sama, sehingga hasilnya sinkron.
+Scraping data turnbackhoax, pembersihan data, penyimpanan ke SQLite, lalu pencocokan klaim. Website dan chatbot memakai database dan fungsi pencocokan yang sama, sehingga hasilnya sinkron.
 
 ## Teknologi
 
