@@ -2,6 +2,8 @@
 
 Website cerdas untuk mengecek apakah sebuah klaim atau pesan berantai sudah pernah diklarifikasi sebagai hoaks. Pengguna menempelkan klaim, lalu sistem mencocokkannya dengan klarifikasi dari situs cek fakta dan menampilkan label serta sumber aslinya.
 
+Proyek akhir mata kuliah Aplikasi Web, Universitas Negeri Yogyakarta.
+
 ## Fitur
 
 - Landing page dengan kolom cek klaim dan statistik
@@ -34,6 +36,4 @@ Buka http://127.0.0.1:5000
 
 Sistem tidak memberi vonis sendiri. Label dikutip dari situs cek fakta dan selalu disertai sumbernya. Jika klaim tidak ditemukan, itu tidak berarti klaimnya benar.
 
-## Pembuat
-
-Arrizal Rahman
+Arrizal Rahman 
