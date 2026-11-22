@@ -1,13 +1,14 @@
 import re
 import subprocess
 import time
+from pathlib import Path
 from urllib.parse import urljoin
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
 BASE_URL = "https://turnbackhoax.id/articles"
-OUT_CSV = Path("data/mentah.csv") if "Path" in globals() else __import__("pathlib").Path("data/mentah.csv")
+OUT_CSV = Path("data/mentah.csv")
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
