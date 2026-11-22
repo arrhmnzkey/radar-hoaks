@@ -1,4 +1,4 @@
-# CekHoaks Radar
+# RadarHoaks
 
 Website cerdas untuk mengecek apakah sebuah klaim atau pesan berantai sudah pernah diklarifikasi sebagai hoaks. Pengguna menempelkan klaim, lalu sistem mencocokkannya dengan klarifikasi dari situs cek fakta dan menampilkan label serta sumber aslinya.
 
