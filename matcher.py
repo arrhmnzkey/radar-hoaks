@@ -16,7 +16,8 @@ STOPWORDS_ID = {
     "tersebut", "merupakan", "menjadi", "melakukan", "membuat", "foto",
     "video", "gambar", "berita", "informasi", "klaim", "hoaks", "hoax",
     "faktanya", "fakta", "sebenarnya", "beredar", "dibagikan", "viral",
-    "apakah", "benar", "salah", "kah", "dong", "ya", "nih", "deh", "sih",
+    "apakah", "benar", "benarkah", "bener", "salah", "kah", "dong", "ya", "nih", "deh", "sih",
+    "gak", "nggak", "bikin", "kok", "emang", "memang",
 }
 
 def rapikan_judul(judul: str) -> str:
