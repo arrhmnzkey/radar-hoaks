@@ -132,3 +132,63 @@ def muat_klaim_db(db_path: Path = DB_PATH) -> list[dict]:
             }
         )
     return hasil 
+
+def cari_klaim_serupa(
+    kueri: str,
+    top_k: int = 3,
+    ambang_batas: float = 0.08,
+    db_path: Path = DB_PATH,
+) -> list[dict]:
+    kueri_bersih = normalisasi_teks(kueri)
+    if not kueri_bersih:
+        return []
+
+    records = muat_klaim_db(db_path)
+    if not records:
+        return []
+
+    vec_kueri = Counter(kueri_bersih.split())
+    token_kueri = ambil_token_penting(kueri)
+
+    kandidat: list[dict] = []
+    for item in records:
+        vec_item = Counter(item["teks_indeks"].split())
+        skor_cos = cosine_sim_counter(vec_kueri, vec_item)
+
+        token_item = ambil_token_penting(
+            f"{item['judul']} {item['ringkasan']} {' '.join(item['kata_kunci'])}"
+        )
+        irisan = token_kueri & token_item
+        rasio_token = (len(irisan) / len(token_kueri)) if token_kueri else 0.0
+
+        skor_akhir = (0.60 * skor_cos) + (0.40 * rasio_token)
+
+        if skor_akhir >= ambang_batas or len(irisan) >= 2:
+            kandidat.append(
+                {
+                    **{k: v for k, v in item.items() if k != "teks_indeks"},
+                    "skor": round(skor_akhir, 4),
+                    "skor_cosine": round(skor_cos, 4),
+                    "kata_cocok": sorted(irisan),
+                }
+            )
+
+    kandidat.sort(key=lambda x: (-x["skor"], -len(x["kata_cocok"]), x["id"]))
+    return kandidat[:top_k]
+
+if __name__ == "__main__":
+    contoh_kueri = [
+        "BPJS diganti klinik kopdes bener gak?",
+        "foto jokowi ditangkap brimob",
+        "pipa minyak arab saudi meledak",
+    ]
+
+    for q in contoh_kueri:
+        print(f"\nKueri: {q}")
+        hasil = cari_klaim_serupa(q, top_k=2)
+        if not hasil:
+            print("  -> Tidak ditemukan kecocokan yang cukup dekat.")
+            continue
+        for rank, h in enumerate(hasil, 1):
+            print(f"  {rank}. [{h['label']}] {h['judul']} (skor={h['skor']}, cocok={h['kata_cocok']})")
+            print(f"     Link: {h['tautan']}")
