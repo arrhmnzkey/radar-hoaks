@@ -61,3 +61,9 @@ def rapikan_judul(judul: str) -> str:
                 teks = a
 
     return re.sub(r"\s+", " ", teks).strip()
+
+def normalisasi_teks(teks: str) -> str:
+    teks = rapikan_judul(teks).lower()
+    teks = re.sub(r"\[[^\]]+\]", " ", teks)
+    teks = re.sub(r"[^a-z0-9\s]", " ", teks)
+    return re.sub(r"\s+", " ", teks).strip()
