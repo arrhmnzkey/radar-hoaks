@@ -86,3 +86,49 @@ def cosine_sim_counter(vec_a: Counter, vec_b: Counter) -> float:
     if norm_a == 0.0 or norm_b == 0.0:
         return 0.0
     return dot / (norm_a * norm_b)
+
+def muat_klaim_db(db_path: Path = DB_PATH) -> list[dict]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database tidak ditemukan: {db_path}")
+
+    with sqlite3.connect(db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            """
+            SELECT id, judul, label, kategori, tanggal, ringkasan, kata_kunci, tautan
+            FROM klaim_hoaks
+            """
+        ).fetchall()
+
+    hasil: list[dict] = []
+    for r in rows:
+        judul_rapi = rapikan_judul(r["judul"])
+        try:
+            kw_list = json.loads(r["kata_kunci"] or "[]")
+            if not isinstance(kw_list, list):
+                kw_list = []
+        except json.JSONDecodeError:
+            kw_list = []
+
+        teks_indeks = " ".join(
+            [
+                normalisasi_teks(judul_rapi),
+                normalisasi_teks(r["ringkasan"]),
+                " ".join(normalisasi_teks(k) for k in kw_list),
+            ]
+        ).strip()
+
+        hasil.append(
+            {
+                "id": r["id"],
+                "judul": judul_rapi,
+                "label": r["label"],
+                "kategori": r["kategori"],
+                "tanggal": r["tanggal"] or "",
+                "ringkasan": r["ringkasan"] or "",
+                "kata_kunci": kw_list,
+                "tautan": r["tautan"],
+                "teks_indeks": teks_indeks,
+            }
+        )
+    return hasil
