@@ -42,3 +42,22 @@ def rapikan_judul(judul: str) -> str:
                 teks = sisa_teks
         else:
             break
+
+# Bersihkan pengulangan frasa berlabel yang saling memuat
+    parts = re.split(r"\s+(?=\[[A-Za-z0-9\s]+\])", teks)
+    if len(parts) > 1:
+        unik_parts: list[str] = []
+        for p in parts:
+            p_clean = p.strip()
+            if p_clean and p_clean not in unik_parts:
+                unik_parts.append(p_clean)
+        if len(unik_parts) == 2:
+            a, b = unik_parts[0], unik_parts[1]
+            a_norm = re.sub(r"^\[[^\]]+\]\s*", "", a).lower()
+            b_norm = re.sub(r"^\[[^\]]+\]\s*", "", b).lower()
+            if a_norm in b_norm:
+                teks = b
+            elif b_norm in a_norm:
+                teks = a
+
+    return re.sub(r"\s+", " ", teks).strip()
