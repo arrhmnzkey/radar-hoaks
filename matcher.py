@@ -131,4 +131,4 @@ def muat_klaim_db(db_path: Path = DB_PATH) -> list[dict]:
                 "teks_indeks": teks_indeks,
             }
         )
-    return hasil
+    return hasil 
