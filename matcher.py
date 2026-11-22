@@ -67,3 +67,12 @@ def normalisasi_teks(teks: str) -> str:
     teks = re.sub(r"\[[^\]]+\]", " ", teks)
     teks = re.sub(r"[^a-z0-9\s]", " ", teks)
     return re.sub(r"\s+", " ", teks).strip()
+
+def ambil_token_penting(teks: str) -> set[str]:
+    bersih = normalisasi_teks(teks)
+    return {
+        tok
+        for tok in bersih.split()
+        if len(tok) >= 3 and tok not in STOPWORDS_ID and not tok.isdigit()
+    }
+
