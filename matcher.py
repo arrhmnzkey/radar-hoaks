@@ -76,3 +76,13 @@ def ambil_token_penting(teks: str) -> set[str]:
         if len(tok) >= 3 and tok not in STOPWORDS_ID and not tok.isdigit()
     }
 
+def cosine_sim_counter(vec_a: Counter, vec_b: Counter) -> float:
+    if not vec_a or not vec_b:
+        return 0.0
+    common = set(vec_a.keys()) & set(vec_b.keys())
+    dot = sum(vec_a[k] * vec_b[k] for k in common)
+    norm_a = math.sqrt(sum(v * v for v in vec_a.values()))
+    norm_b = math.sqrt(sum(v * v for v in vec_b.values()))
+    if norm_a == 0.0 or norm_b == 0.0:
+        return 0.0
+    return dot / (norm_a * norm_b)
